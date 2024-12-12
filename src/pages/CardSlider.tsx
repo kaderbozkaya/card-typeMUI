@@ -2,25 +2,32 @@ import { Box, Grid2, Stack, Typography, useTheme } from '@mui/material'
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import React, { useRef } from 'react'
-import img1 from '../images/blog.png'
+import { Listitems } from '../components/Listitems';
+import Card from '../components/Card';
 
 function CardSlider() {
     const theme=useTheme()
     const containerRef=useRef<HTMLDListElement>(null)
+    const sliderButton=(side:string)=>{
+      if(containerRef.current&&side==="left"){
+        containerRef.current.scrollLeft -=500
+      }
+      if(containerRef.current&&side==="right"){
+        containerRef.current.scrollLeft +=500
+      }
+    }
   return (
     <>
 <Stack sx={{py:"30px", px:{xs:"20px", xl:"60px"}}}>
     <Box sx={{display:"flex", flexDirection:"row", justifyContent:"space-between", alignContent:"center", alignItems:"center"}}>
-<Typography variant='h6' component="div" fontWeight="bold" textAlign="center" sx={{my:"20px", color:theme.palette.primary.dark}} >
-deneme yazmak
+<Typography variant='h6' component="div" fontWeight="bold" textAlign="center" sx={{fontFamily:"Roboto", my:"20px", color:theme.palette.primary.dark}} >
+Card Header
 </Typography>
 <Box sx={{display:"flex", flexDirection:"row", gap:3}}>
-  <Stack sx={{background:theme.palette.primary.dark, height:"35px", width:"35px", borderRadius:"50%", flexWrap:"wrap" ,justifyContent:"center", alignContent:"center", mb:"20px", color:"#fff", cursor:"pointer"}}>
+  <Stack sx={{background:theme.palette.primary.dark, height:"35px", width:"35px", borderRadius:"50%", flexWrap:"wrap" ,justifyContent:"center", alignContent:"center", mb:"15px", color:"#fff", cursor:"pointer"}} onClick={()=>sliderButton("left")}>
     <ArrowBackIosIcon sx={{fontSize:"15px"}}/>
   </Stack>
-</Box>
-<Box sx={{display:"flex", flexDirection:"row", gap:3}}>
-  <Stack sx={{background:theme.palette.primary.dark, height:"35px", width:"35px", borderRadius:"50%", flexWrap:"wrap" ,justifyContent:"center", alignContent:"center", mb:"20px", color:"#fff", cursor:"pointer"}}>
+  <Stack sx={{background:theme.palette.primary.dark, height:"35px", width:"35px", borderRadius:"50%", flexWrap:"wrap" ,justifyContent:"center", alignContent:"center", mb:"20px", color:"#fff", cursor:"pointer"}} onClick={()=>sliderButton("right")}>
     <ArrowForwardIosIcon sx={{fontSize:"15px"}}/>
   </Stack>
 </Box>
@@ -31,18 +38,13 @@ deneme yazmak
     mb:"20px"
     }}
     ref={containerRef}>
-      <Box sx={{height:"100%", width:"100%", background:"orange", display:"flex", flexWrap:"wrap", alignContent:"center"}}>
+      <Box sx={{height:"100%",width:"280%", display:"flex" , flexWrap:"wrap", alignContent:"center"}}>
         <Grid2 rowSpacing={1} columnSpacing={{xs:1,sm:2, md:3}} gap={2} justifyContent="center" sx={{display:"flex"}}>
-          <Box sx={{height:"300px", width:"300px", bgcolor:"green", boxShadow:"0 2px 4px rgba(0,0,0,0.1)", borderRadius:"10px", overflow:'hidden'}}>
-            <Box sx={{height:"60%"}}>
-              <img src={img1} width='100%' height='100%' style={{objectFit:"cover"}}></img>
-            </Box>
-            <Box sx={{px:"10px", mt:"5px"}} gap={3}>
-              <Typography fontWeight="bold">Title</Typography>
-              <Typography variant='body2' justifyContent="justify" py="5px">Title</Typography>
-              <Typography fontWeight="bold" color='orange' sx={{cursor:"pointer"}}>Learn More</Typography>
-            </Box>
-          </Box>
+         {Listitems.map((slider,index)=> {
+          return(
+            <Card image={slider.image} title={slider.title} desc={slider.desc}/>
+          )
+         })}
 
         </Grid2>
       </Box>

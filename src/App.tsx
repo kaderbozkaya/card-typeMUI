@@ -4,7 +4,7 @@ import React from 'react'
 import CardSlider from './pages/CardSlider'
 import '@fontsource/poppins'
 
-function App() {
+const App=()=> {
   const theme=createTheme({
     palette: {
       primary:orange,
