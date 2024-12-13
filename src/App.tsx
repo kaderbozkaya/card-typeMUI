@@ -1,24 +1,31 @@
-import { createTheme, ThemeProvider } from '@mui/material'
-import { orange } from '@mui/material/colors'
-import React from 'react'
-import CardSlider from './pages/CardSlider'
-import '@fontsource/poppins'
+import { Box, Container, Typography } from "@mui/material"
+import Navbar from "./components/Navbar"
+import Search from "./components/Search"
+import CardTutorial from "./components/CardTutorial"
+import useFetchData from "./Hooks/useFetchData"
+import Loader from "./components/Loader"
+
 
 const App=()=> {
-  const theme=createTheme({
-    palette: {
-      primary:orange,
-    },
-    typography: {
-      fontFamily:"Poppins"
-    }
-
-  })
+const {data,error,loading,term,setTerm}=useFetchData()
+if(error){
+  return error.message
+}
+const searchTerm=(e:React.ChangeEvent<HTMLInputElement>)=> {
+  setTerm(e.target.value)
+}
   return (
     <>
-    <ThemeProvider theme={theme}>
-      <CardSlider/>
-    </ThemeProvider>
+  <Navbar/>
+  <Container maxWidth="sm">
+    <Box sx={{bgcolor:"#fafafa", minHeight:"100vh", padding:"12px 30px", mt:2}}>
+      <Typography variant="h2">Google Books</Typography>
+      <Search term={term} searchTerm={searchTerm}/>
+      {loading ? <Loader/> :
+      data?.map((book)=> <CardTutorial book={book} key={book.id}/>)}
+
+    </Box>
+  </Container>
     </>
   )
 }
